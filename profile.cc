@@ -3,6 +3,8 @@
 #include "date.h"
 #include <iostream>
 
+using namespace std;
+
 Profile::Profile(std::string n, Date d){
     name = n;
     bday = d;
@@ -35,17 +37,18 @@ bool Profile::operator != (const Profile& other)const{
 }
 
 void Profile::input(std::istream& ins){
-    if(&ins == &std::cin){
-        std::cout << "Enter the name: ";
+    if(&ins == &cin){
+        cout << "Enter the name: ";
+        ins >> name;
+        cout << "Enter the bday: ";
+        ins >> bday;
     }
-    while(ins.peek() == '\n'){
-        ins.ignore();
+
+    else{
+        ins >> name;
+        ins >> bday;
     }
-    getline(ins, name); // this is where the issue is
-    if(&ins == &std::cin){
-        std::cout << "Enter the bday: ";
-    }
-    ins >> bday;
+    
 }
 
 void Profile::output(std::ostream& outs)const{
@@ -55,7 +58,6 @@ void Profile::output(std::ostream& outs)const{
 }
 
 std::istream& operator >> (std::istream& ins, Profile& p){
-    std::cout << "Yes" << std::endl;
     p.input(ins);
     return ins;
 }

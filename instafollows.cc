@@ -91,9 +91,10 @@ void InstaFollows::load(std::istream& ins){
             resize();
         }
         ins >> data[used];
+        std::cout << data[used-1] << std::endl;
         used++;
-        std::cout << data[used] << std::endl;
     }
+    used--;
 }
 
 void InstaFollows::save(std::ostream& outs)const{
@@ -101,9 +102,19 @@ void InstaFollows::save(std::ostream& outs)const{
 }
 
 void InstaFollows::resize(){
-    Profile* tmp;
-    tmp = new Profile[capacity + 5];
+    Profile tmp[capacity];
+
     for(int i = 0; i < used; i++){
         tmp[i] = data[i];
     }
+
+    delete []data;
+
+    data = new Profile[capacity+5];
+
+    for(int i = 0; i < used; i++){
+        data[i] = tmp[i];
+    }
+
+    capacity +=5;
 }
