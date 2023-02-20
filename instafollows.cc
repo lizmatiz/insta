@@ -54,15 +54,45 @@ Profile InstaFollows::current()const{
 }
 
 void InstaFollows::remove_current(){
-    int i = 0;
+    for(int i = current_index; i < used; i++){
+        data[i] = data[i+1];
+    }
+    used--;
 }
 
 void InstaFollows::insert(const Profile& p){
-    int i = 0;
+    if(used == capacity){
+        resize();
+    }
+    if(current_index < capacity){
+        for(int i = used; i > current_index; i--){
+            data[i] = data[i-1];
+        }
+        data[current_index] = p;
+    }
+    else{
+        for(int i = used; i > 0; i--){
+            data[i] = data[i-1];
+        }
+        data[0] = p;
+    }
+    used++;
 }
 
 void InstaFollows::attach(const Profile& p){
-    int i = 0;
+    if(used == capacity-1){
+        resize();
+    }
+    if(current_index < capacity){
+        for(int i = used; i > current_index; i--){
+                data[i+1] = data[i];
+            }
+            data[current_index + 1] = p;
+        }
+        else{
+            data[used] = p;
+    }
+    used++;
 }
 
 void InstaFollows::show_all(std::ostream& outs)const{
@@ -73,16 +103,37 @@ void InstaFollows::show_all(std::ostream& outs)const{
 }
 
 void InstaFollows::bday_sort(){
-    int i = 0;
+    int i, j, smallsp;
+    Profile tmp;
+    for(i = 0; i < used - 1; i++){
+        smallsp = i;
+        for(j = i + 1; j < used; j++){
+            if (data[j].get_bday() < data[smallsp].get_bday()){
+                smallsp = j;
+            }
+        }
+        tmp = data[i];
+        data[i] = data[smallsp];
+        data[smallsp] = tmp;
+    }
 }
 
 Profile InstaFollows::find_profile(const std::string& name)const{
-    Profile p;
-    return p;
+    for(int i = 0; i < used; i++){
+        if(data[i].get_name() == name){
+            return data[i];
+        }
+    }
+    return Profile();
 }
 
 bool InstaFollows::is_profile(const Profile& p) const{
-    return true;
+    for(int i = 0; i < used; i++){
+        if(p == data[i]){
+            return true;
+        }
+    }
+    return false;
 }
 
 void InstaFollows::load(std::istream& ins){
@@ -91,10 +142,9 @@ void InstaFollows::load(std::istream& ins){
             resize();
         }
         ins >> data[used];
-        std::cout << data[used-1] << std::endl;
+        std::cout << data[used] << std::endl;
         used++;
     }
-    used--;
 }
 
 void InstaFollows::save(std::ostream& outs)const{

@@ -39,21 +39,34 @@ bool Profile::operator != (const Profile& other)const{
 void Profile::input(std::istream& ins){
     if(&ins == &cin){
         cout << "Enter the name: ";
-        ins >> name;
+        while(ins.peek() == '\n'){
+            ins.ignore();
+        }
+        getline(ins, name);
         cout << "Enter the bday: ";
         ins >> bday;
     }
 
     else{
-        ins >> name;
+        while(ins.peek() == '\n'){
+            ins.ignore();
+        }
+        getline(ins, name);
         ins >> bday;
     }
     
 }
 
 void Profile::output(std::ostream& outs)const{
-    outs << "Name: " << name << std::endl;
-    outs << "Bday: " << bday << std::endl;
+    if(&outs == &cout){
+        outs << "Name: " << name << endl;
+        outs << "Bday: " << bday << endl;
+    }
+
+    else{
+        outs << name;
+        outs << bday;
+    }
 
 }
 
