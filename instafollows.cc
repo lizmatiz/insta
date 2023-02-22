@@ -1,7 +1,8 @@
 #include "instafollows.h"
 #include "profile.h"
 #include <iostream>
-//#include "date.h"
+
+using namespace std;
 
 InstaFollows::InstaFollows(){
     used = 0;
@@ -148,7 +149,9 @@ void InstaFollows::load(std::istream& ins){
 }
 
 void InstaFollows::save(std::ostream& outs)const{
-    int i = 0;
+    for(int i = 0; i < used; i++){
+        data[i].output(outs);
+    }
 }
 
 void InstaFollows::resize(){

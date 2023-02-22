@@ -64,8 +64,8 @@ void Profile::output(std::ostream& outs)const{
     }
 
     else{
-        outs << name;
-        outs << bday;
+        outs << name << endl;
+        outs << bday << endl;
     }
 
 }
